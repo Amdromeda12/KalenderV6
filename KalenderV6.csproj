@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>False</UseWindowsForms>
+    <ApplicationIcon>Assets\KIcon.ico</ApplicationIcon>
+	  <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\arrow.png" />
+    <None Remove="Assets\check.png" />
+    <None Remove="Assets\crown.png" />
+    <None Remove="Assets\crown2.png" />
+    <None Remove="Assets\exit.png" />
+    <None Remove="Assets\home.png" />
+    <None Remove="Assets\KIcon.ico" />
+    <None Remove="Assets\right-arrow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\arrow.png" />
+    <Resource Include="Assets\check.png" />
+    <Resource Include="Assets\crown.png" />
+    <Resource Include="Assets\crown2.png" />
+    <Resource Include="Assets\exit.png" />
+    <Resource Include="Assets\home.png" />
+    <Content Include="Assets\KIcon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\right-arrow.png" />
+  </ItemGroup>
+
+</Project>

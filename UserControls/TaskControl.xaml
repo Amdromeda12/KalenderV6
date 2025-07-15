@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="KalenderV6.UserControls.TaskControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModel="clr-namespace:KalenderV6.ViewModel"
+    xmlns:local="clr-namespace:KalenderV6"
+    xmlns:Converters="clr-namespace:KalenderV6.Converters"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+    <UserControl.DataContext>
+        <viewModel:TaskControlViewModel/>
+    </UserControl.DataContext>
+    
+    <UserControl.Resources>
+        <Converters:BooleanToColorConverter x:Key="BooleanToColorConverter" CheckedColor="Blue" UncheckedColor="Black"/>
+
+        <!-- Define a style for TextBlocks to keep them consistent -->
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4,0"/>
+        </Style>
+
+        <!-- Define a style for the CheckBox -->
+        <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="4,0"/>
+        </Style>
+
+        <!-- Style to hide scroll bars -->
+        <Style x:Key="NoScrollBarScrollViewer" TargetType="ScrollViewer">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+        </Style>
+
+        <!-- Style for TreeView to include ScrollViewer styling -->
+        <Style TargetType="TreeView">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TreeView">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer 
+                                HorizontalScrollBarVisibility="Hidden" 
+                                VerticalScrollBarVisibility="Hidden">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="45*"/>
+        </Grid.ColumnDefinitions>
+        
+                <!--//Buttons//-->
+        <Grid Grid.Row="0" Background="DarkRed" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="15*"/>
+                </Grid.RowDefinitions>
+                
+                <Button Height="50" Width="auto" Content="Watch" Background="BlanchedAlmond" Grid.Row="1"
+                        Command="{Binding BtnWatchPress}"/>
+                <Button Height="50" Width="auto" Content="Complete" Background="BlanchedAlmond" Grid.Row="2"
+                        Command="{Binding BtnCompletePress}"/>
+            <!--Togbort knappar så extra plats-->
+        </Grid>
+        
+                <!--//Tasks//-->
+        <TreeView ItemsSource="{Binding Tasks}"
+                  Background="DimGray"
+                  BorderBrush="Gray"
+                  Grid.Column="1"
+                  BorderThickness="1"
+                  SelectedItemChanged="TreeView_SelectedItemChanged">
+            
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <!-- Children -->
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="5" Background="GhostWhite">
+                                <TextBlock Text="{Binding Name}"
+                                           Width="90"
+                                           Foreground="{Binding IsCompleted, 
+                                           Converter={StaticResource BooleanToColorConverter}}"
+                                           Style="{StaticResource TextBlockStyle}"/>
+                                <TextBlock Text="{Binding Date, StringFormat=yyyy-MM-dd}" Style="{StaticResource TextBlockStyle}" Foreground="Black"/>
+                                <CheckBox IsChecked="{Binding IsCompleted}" IsEnabled="False" Style="{StaticResource CheckBoxStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+
+                    <!-- Parent -->
+                    <StackPanel Orientation="Horizontal" Background="DarkGray" Margin="2">
+                        <TextBlock Text="{Binding Name}"
+                                   Width="210"
+                                   FontWeight="Bold"
+                                   Style="{StaticResource TextBlockStyle}"/>
+                        <TextBlock Text="{Binding IncompleteCountBeforeToday}"
+                                   Foreground="Red"
+                                   FontWeight="Bold"
+                                   Margin="0,0,8,0"
+                                   Style="{StaticResource TextBlockStyle}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Grid>
+</UserControl>
